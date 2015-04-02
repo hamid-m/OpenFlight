@@ -116,7 +116,7 @@ static double y_speed[2] = {0,0}; //output of altitude low pass filter { y(k), y
 
 
 /// Return control outputs based on references and feedback signals.
-extern void get_control(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr) {
+extern void get_control(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr, struct mission *missionData_ptr) {
 
 	// PLACE OPTIONAL PHI BIAS HERE
 	//navData_ptr->phi += DEG*pi/180;

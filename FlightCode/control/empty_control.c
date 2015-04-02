@@ -19,7 +19,7 @@
 #include "control_interface.h" 
 
 /// Return control outputs based on references and feedback signals.
-extern void get_control(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr) {
+extern void get_control(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr, struct mission *missionData_ptr) {
 
     // Control law: ***********************************************************
     // Here: get_control surface outputs.

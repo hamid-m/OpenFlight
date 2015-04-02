@@ -92,7 +92,7 @@ static double de; // Delta elevator
 
 
 
-extern void get_control(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr) {
+extern void get_control(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr, struct mission *missionData_ptr) {
 /// Return control outputs based on references and feedback signals.
 
 #ifdef AIRCRAFT_THOR

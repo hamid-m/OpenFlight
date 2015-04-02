@@ -196,7 +196,7 @@ int main(int argc, char **argv) {
 				//************************************************************************
 
 				//**** CONTROL ***********************************************************
-				get_control(time, &sensorData, &navData, &controlData);
+				get_control(time, &sensorData, &navData, &controlData, &missionData);
 				etime_control = get_Time() - tic - etime_sensfault - etime_guidance - etime_nav - etime_daq; // compute execution time
 				//************************************************************************		
 
