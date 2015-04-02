@@ -82,10 +82,10 @@ static int wtime=0;
 //FILE *rudder;
 
 
-extern void get_guidance(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr){
+extern void get_guidance(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr, struct mission *missionData_ptr){
     int state=4;
     
-    state=(controlData_ptr->run_num)%3; 
+    state=(missionData_ptr->run_num)%3; 
     
     //rudder = fopen("rudder.txt", "a");
     

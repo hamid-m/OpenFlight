@@ -18,7 +18,7 @@
 #include "../system_id/systemid_interface.h"
 #include "guidance_interface.h"
 
-extern void get_guidance(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr){
+extern void get_guidance(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr, struct mission *missionData_ptr){
 
 		controlData_ptr->psi_cmd = 0;
 		controlData_ptr->h_cmd = 0;

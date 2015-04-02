@@ -21,7 +21,8 @@
 extern void get_guidance(double time, 			///< [sec], time since in autopilot mode
 		struct sensordata *sensorData_ptr,	///< pointer to sensorData structure
 		struct nav *navData_ptr,			///< pointer to navData structure
-		struct control *controlData_ptr		///< pointer to controlData structure
+		struct control *controlData_ptr,		///< pointer to controlData structure
+		struct mission *missionData_ptr		///< pointer to missionData structure
 		);
 
 #endif /* GUIDANCE_INTERFACE_H_ */

@@ -18,7 +18,7 @@
 #include "../system_id/systemid_interface.h"
 #include "guidance_interface.h"
 
-extern void get_guidance(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr){
+extern void get_guidance(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr, struct mission *missionData_ptr){
 
 		controlData_ptr->psi_cmd = 3600*D2R;  //15*D2R set to zero for bench testing, 15 deg for flight as a safehold
 		controlData_ptr->h_cmd = 0;

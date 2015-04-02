@@ -18,7 +18,7 @@
 #include "../system_id/systemid_interface.h"
 #include "guidance_interface.h"
 
-extern void get_guidance(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr){
+extern void get_guidance(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr, struct mission *missionData_ptr){
 	if (time < 25.0){
 		controlData_ptr->phi_cmd = 0;
 		controlData_ptr->theta_cmd = 0;

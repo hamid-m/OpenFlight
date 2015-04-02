@@ -186,7 +186,7 @@ int main(int argc, char **argv) {
 				time = get_Time()-t0; // Time since in auto mode
 
 				//**** GUIDANCE **********************************************************
-				get_guidance(time, &sensorData, &navData, &controlData);
+				get_guidance(time, &sensorData, &navData, &controlData, &missionData);
 				etime_guidance= get_Time() - tic - etime_nav - etime_daq; // compute execution time
 				//************************************************************************		
 
