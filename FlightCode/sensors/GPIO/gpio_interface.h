@@ -37,7 +37,7 @@ void init_gpio(void);
  * \sa init_gpio()
  * \ingroup gpio_fcns
 */
-void read_gpio(struct control *controlData_ptr	///< pointer to controlData structure
+void read_gpio(struct mission *missionData_ptr	///< pointer to controlData structure
 		);
 
 #endif

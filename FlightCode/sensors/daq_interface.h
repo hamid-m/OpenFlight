@@ -31,7 +31,8 @@ void init_daq(struct sensordata *sensorData_ptr,	///< pointer to sensorData stru
 */
 void get_daq(struct sensordata *sensorData_ptr,	///< pointer to sensorData structure
 		struct nav *navData_ptr,			///< pointer to navData structure
-		struct control *controlData_ptr		///< pointer to controlData structure
+		struct control *controlData_ptr,		///< pointer to controlData structure
+		struct mission *missionData_ptr		///< pointer to missionData structure
 		);
 
 /// Basic low pass filter used to filter altitude and airspeed signals

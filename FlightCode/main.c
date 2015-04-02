@@ -56,12 +56,13 @@ trigger_actuators,  trigger_datalogger, trigger_telemetry;
 int main(int argc, char **argv) {
 
 	// Data Structures
-	struct  imu   imuData;
-	struct  gps   gpsData;
-	struct  nav   navData;
-	struct  control controlData;
-	struct  airdata adData;
-	struct  surface surfData;
+	struct 	mission 	missionData;
+	struct  nav   		navData;
+	struct  control 	controlData;
+	struct  imu   		imuData;
+	struct  gps   		gpsData;
+	struct  airdata 	adData;
+	struct  surface 	surfData;
 
 	// Additional data structures for GPS FASER
 	struct  gps   gpsData_l;
@@ -134,8 +135,9 @@ int main(int argc, char **argv) {
 	init_telemetry();
 
 	while(1){
-		controlData.mode = 1; // initialize to manual mode
-		controlData.run_num = 0; // reset run counter
+		missionData.mode = 1; 				// initialize to manual mode
+		missionData.run_num = 0; 			// reset run counter
+		navData.err_type = got_invalid;		// initialize nav filter as invalid
 
 		//initialize real time clock at zero
 		reset_Time();
@@ -151,14 +153,14 @@ int main(int argc, char **argv) {
 		//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		//main-loop
 		//++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		while (controlData.mode != 0) {
+		while (missionData.mode != 0) {
 
 			loop_counter++; //.increment loop counter
 
 			//**** DATA ACQUISITION **************************************************
 			pthread_cond_wait (&trigger_daq, &mutex); // WAIT FOR DAQ ALARMS
 			tic = get_Time();			
-			get_daq(&sensorData, &navData, &controlData);		
+			get_daq(&sensorData, &navData, &controlData, &missionData);		
 			etime_daq = get_Time() - tic - DAQ_OFFSET; // compute execution time
 			//************************************************************************
 
@@ -175,7 +177,7 @@ int main(int argc, char **argv) {
 			etime_nav = get_Time() - tic - etime_daq; // compute execution time			
 			//************************************************************************
 
-			if (controlData.mode == 2) { // autopilot mode
+			if (missionData.mode == 2) { // autopilot mode
 				if (t0_latched == FALSE) {
 					t0 = get_Time();
 					t0_latched = TRUE;
@@ -238,7 +240,7 @@ int main(int argc, char **argv) {
 				cyg_cpuload_get (loadhandle, &last100ms, &last1s, &last10s);
 				cpuLoad = (uint16_t)last100ms;
 
-				send_telemetry(&sensorData, &navData, &controlData, cpuLoad);
+				send_telemetry(&sensorData, &navData, &controlData, &missionData, cpuLoad);
 				
 				etime_telemetry = get_Time() - tic - etime_datalog - etime_actuators - ACTUATORS_OFFSET; // compute execution time
 			}

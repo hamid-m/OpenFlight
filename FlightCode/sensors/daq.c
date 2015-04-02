@@ -120,7 +120,6 @@ void init_daq(struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct
 	sensorData_ptr->gpsData_ptr->navValid = 1;
 	sensorData_ptr->gpsData_l_ptr->navValid = 1;
 	sensorData_ptr->gpsData_r_ptr->navValid = 1;
-	navData_ptr->err_type = got_invalid;
     // initialize GPS_TOW to 0, to ensure old_GPS_TOW is set to 0 initially when checking if GPS data is new
 	sensorData_ptr->gpsData_ptr->GPS_TOW = 0;
 	sensorData_ptr->gpsData_l_ptr->GPS_TOW = 0;
@@ -128,7 +127,7 @@ void init_daq(struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct
 
 }
 
-void get_daq(struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr){		
+void get_daq(struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr, struct mission *missionData_ptr){		
 
 	// local pointers to keep things tidy
 	struct imu *imuData_ptr = sensorData_ptr->imuData_ptr;
@@ -290,7 +289,7 @@ void get_daq(struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct 
 	//**** End GPS ****
 
 	// Read GPIOs; data dump, control mode
-	read_gpio(controlData_ptr);
+	read_gpio(missionData_ptr);
 	
 }
 

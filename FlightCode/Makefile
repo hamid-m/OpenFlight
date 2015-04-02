@@ -18,7 +18,6 @@ AIRCRAFT = THOR
 #AIRCRAFT = TYR
 #AIRCRAFT = FASER
 #AIRCRAFT = IBIS
-#AIRCRAFT = LOKI
 
 ##### GUIDANCE LAW #####
 # Point to the desired guidance code here
@@ -109,12 +108,6 @@ SENSORS = sensors/AirData/AMS_pressure.c sensors/GPS/gps_oemstar.c sensors/IMU/I
 ACTUATORS = actuators/actuator_PWM.c
 endif
 
-ifeq ($(strip $(AIRCRAFT)),LOKI)
-AIRCRAFT_CONFIG = aircraft/loki_config.h
-DATALOG_CONFIG = datalog/standard_datalog.h
-SENSORS = sensors/AirData/AMS_pressure.c sensors/GPS/gps_sirf.c sensors/IMU/IMU_iSensor.c sensors/GPIO/gpio.c
-ACTUATORS = actuators/actuator_PWM.c
-endif
 #########################################################################
 
 # Code to be compiled

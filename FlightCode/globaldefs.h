@@ -146,6 +146,12 @@ struct surface {
 	double df_r_pos;	///< [rad], measured right flap position, +TED
 };
 
+/// Mission manager Data structure
+struct mission {
+	unsigned short mode;///< mode variable; 0 = dump data, 1 = manual control, 2 = autopilot control
+	unsigned short run_num;///< counter for number of autopilot engagements
+};
+
 /// Control Data structure
 struct control {
 	double dthr_in;		///< [0-1], throttle command from R/C
@@ -185,8 +191,6 @@ struct control {
 	double signal_7;     ///< user defined dummy variable
 	double signal_8;     ///< user defined dummy variable
 	double signal_9;     ///< user defined dummy variable
-	unsigned short mode;///< mode variable; 0 = dump data, 1 = manual control, 2 = autopilot control
-	unsigned short run_num;///< counter for number of autopilot engagements
 };
 
 /// Navigation Filter Data Structure
