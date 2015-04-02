@@ -110,7 +110,7 @@ int32_t* saveAsIntPointers[NUM_INT_VARS] = {(int32_t *)&imuData.err_type,(int32_
 char* saveAsShortNames[NUM_SHORT_VARS] = {"mode", "satVisible", "navValid","cpuLoad","adStatus"};
 
 /// uint16_t pointer array to variables that will be saved as shorts
-uint16_t* saveAsShortPointers[NUM_SHORT_VARS] = {&controlData.mode, &gpsData.satVisible,
+uint16_t* saveAsShortPointers[NUM_SHORT_VARS] = {&missionData.mode, &gpsData.satVisible,
 												  &gpsData.navValid,&cpuLoad,&adData.status};
 #endif	
 

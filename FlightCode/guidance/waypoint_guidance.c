@@ -76,7 +76,7 @@ static short pinit=0, lc=10;
 static double d2WP, xA, yA, xT, yT, xC, yC, psiT, dpsi, psi, Rt, R2, psiC;
 
 
-extern void get_guidance(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr){
+extern void get_guidance(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr, struct mission *missionData_ptr){
 
 if (time>0.05){
 	#ifdef AIRCRAFT_THOR

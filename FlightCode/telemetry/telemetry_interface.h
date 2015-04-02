@@ -29,6 +29,7 @@ void init_telemetry();
 void send_telemetry(struct sensordata *sensorData_ptr,	///< pointer to sensorData structure
 		struct nav *navData_ptr,			///< pointer to navData structure
 		struct control *controlData_ptr,	///< pointer to controlData structure
+		struct mission *missionData_ptr,	///< pointer to missionData structure
 		uint16_t cpuLoad					///< current CPU load measurement
 		);
 

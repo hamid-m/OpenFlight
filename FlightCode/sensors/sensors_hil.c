@@ -71,11 +71,11 @@ static unsigned int countBuf = 0;
 void init_gpio() {
 }
 
-void read_gpio(struct control *controlData_ptr) {
+void read_gpio(struct mission *missionData_ptr) {
 	if (hil_data[1] == 1) {
-		controlData_ptr->mode = 0; // data dump
+		missionData_ptr->mode = 0; // data dump
 	} else {
-		controlData_ptr->mode = hil_data[0] + 1; // manual or auto mode
+		missionData_ptr->mode = hil_data[0] + 1; // manual or auto mode
 	}
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

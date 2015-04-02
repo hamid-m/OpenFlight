@@ -44,7 +44,7 @@ void init_telemetry(){
 	port = open_serial(TELEMETRY_PORT, TELEMETRY_BAUDRATE);	
 }
 
-void send_telemetry(struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr, uint16_t cpuLoad)
+void send_telemetry(struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr, struct mission *missionData_ptr, uint16_t cpuLoad)
 {
 	int bytes=0;
 	unsigned short flags=0;
@@ -84,8 +84,8 @@ void send_telemetry(struct sensordata *sensorData_ptr, struct nav *navData_ptr, 
 	memcpy(&tele_data[19],&tmp,4);
 
 	//if (ofpMode == standby) flags = flags | 0x01;
-	if (controlData_ptr->mode == 2) flags = flags | 0x01<<1;	// Autopilot mode
-	if (controlData_ptr->mode == 1) flags = flags | 0x01<<4;  // Manual mode
+	if (missionData_ptr->mode == 2) flags = flags | 0x01<<1;	// Autopilot mode
+	if (missionData_ptr->mode == 1) flags = flags | 0x01<<4;  // Manual mode
 	if ( (sensorData_ptr->imuData_ptr->err_type != checksum_err) && (sensorData_ptr->imuData_ptr->err_type != got_invalid) ) flags = flags | 0x01<<6;
 	if (sensorData_ptr->gpsData_ptr->err_type == data_valid || sensorData_ptr->gpsData_ptr->err_type == incompletePacket) flags = flags | 0x01<<7;
 	if (sensorData_ptr->gpsData_ptr->navValid == 0) flags = flags | 0x01<<8;

@@ -22,7 +22,7 @@ void MdlOutputs(int_T tid);
 void MdlInitialize(void);
 
 
-void get_control(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr){
+void get_control(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr, struct mission *missionData_ptr){
 
 	// Populate the reference commands and feedback inputs for the Simulink diagram.
 	// See ../../Documentation/UAV_controllaw_ICD.xlsx for details.

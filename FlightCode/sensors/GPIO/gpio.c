@@ -56,32 +56,27 @@ void init_gpio(void)
 	
 }
 
-void read_gpio(struct control *controlData_ptr){
+void read_gpio(struct mission *missionData_ptr){
 	static int delay =0;
-	char temp[50]={'\0',};
 	// control mode
 	if(GPIO_GPW_GetInputStatus(MPC5XXX_GPW_GPIO_WKUP_6) == 1){
-		if(controlData_ptr->mode==1){
-			controlData_ptr->run_num++;
+		if(missionData_ptr->mode==1){
+			missionData_ptr->run_num++;
 
 		}
 
-		//Moved the next two lines outside the above if statement in order to update the waypoint value
-		sprintf(temp,"Run number %d, Waypoint: %f",controlData_ptr->run_num, controlData_ptr->r_cmd);
-		send_status(temp);
-
-		controlData_ptr->mode = 2; // autopilot
+		missionData_ptr->mode = 2; // autopilot
 
 	}
 	else{
-		controlData_ptr->mode = 1; // manual
+		missionData_ptr->mode = 1; // manual
 	}
 	
 	// data dump
 	// check if trigger has arrived for data transfer / OFP termination
 	if (GPIO_GPW_GetInputStatus(MPC5XXX_GPW_GPIO_WKUP_7) == 1) {
 		if (++delay > 50){
-			controlData_ptr->mode = 0; // datadump
+			missionData_ptr->mode = 0; // datadump
 			delay = 0;
 		}
 	}

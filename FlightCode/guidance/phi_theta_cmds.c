@@ -19,17 +19,17 @@
 #include "guidance_interface.h"
 
 
-extern void get_guidance(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr){
+extern void get_guidance(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr, struct mission *missionData_ptr){
 
 
 
         int state = 0;
 
-        if(controlData_ptr->run_num > 9){
-                state = controlData_ptr->run_num - 9;
+        if(missionData_ptr->run_num > 9){
+                state = missionData_ptr->run_num - 9;
         }
        else{
-                state = controlData_ptr->run_num;
+                state = missionData_ptr->run_num;
         }
 
         switch(state){
