@@ -108,23 +108,18 @@
 #define PWMOUT_DF_R_CAL { 769.88, 	 -199.77,   2375.6, 	4094.6} ///< cubic calibration for right flap
 #define PWMOUT_DF_L_CAL { 769.88, 	 -199.77,   2375.6, 	4094.6} ///< cubic calibration for right flap
 
-// R/C PWM input command channels
-#define PWMIN_DTHR_CH	1 ///<  PWM input channel for throttle
-#define PWMIN_DE_CH		2 ///<  PWM input channel for elevator
-#define PWMIN_DR_CH		0 ///<  PWM input channel for rudder
-#define PWMIN_DA_L_CH	3 ///<  PWM input channel for left aileron
-#define PWMIN_DA_R_CH	3 ///<  PWM input channel for right aileron
+// Pilot inceptor channels
+#define THR_INCP_CH		1 ///<  input channel for pilot throttle inceptor
+#define PITCH_INCP_CH	2 ///<  input channel for pilot pitch inceptor
+#define YAW_INCP_CH		0 ///<  input channel for pilot yaw inceptor
+#define ROLL_INCP_CH	3 ///<  input channel for pilot roll inceptor
 
-// R/C PWM input command calibration parameters TODO: update these
+// Pilot inceptor calibration parameters
 #define PWMIN_SCALING 10000 	///< scaling parameter to apply to PWM readings prior to applying calibration
-#define PWMIN_DTHR_CAL	{0.00098716683119, -2.527147087857848}	///<  linear calibration for throttle PWM input
-#define PWMIN_DE_CAL	{-111.529886096001,	96.8294668116000,	-21.5238268564487,	0.763949002413993}	///<  linear calibration for elevator PWM input
-#define PWMIN_DR_CAL	{84.7756193670826,	-76.8786260771467,	17.1754736690082,	-0.535104948804940}	///<  linear calibration for rudder PWM input
-#define PWMIN_DA_L_CAL	{-42.3502385103704,	40.4850850262976,	-6.72738032331522,	-0.496271142735041}	///<  linear calibration for left aileron PWM input
-#define PWMIN_DA_R_CAL	{61.0358884569641,	-52.2900804796504,	8.82735081897271,	0.471140780636548}	///<  linear calibration for right aileron PWM input
-#define PWMIN_DF_L_CAL	{-8.19212357279288,	11.0704001359758,	-2.59648820938495}	///<  linear calibration for left flap PWM input
-#define PWMIN_DF_R_CAL	{4.70693741824564,	-9.05102546586889,	2.30756437001963}	///<  linear calibration for right flap PWM input
-#define PWMIN_DG_THRESHOLD 3000		///<  threshold for gear PWM input; below = 0, above = 1
+#define THR_INCP_CAL	{0.00098716683119, -2.527147087857848}	///<  linear calibration for pilot throttle inceptor
+#define PITCH_INCP_CAL	{-111.529886096001,	96.8294668116000,	-21.5238268564487,	0.763949002413993}	///<  linear calibration for pilot pitch inceptor
+#define YAW_INCP_CAL	{84.7756193670826,	-76.8786260771467,	17.1754736690082,	-0.535104948804940}	///<  linear calibration for pilot yaw inceptor
+#define ROLL_INCP_CAL	{-42.3502385103704,	40.4850850262976,	-6.72738032331522,	-0.496271142735041}	///<  linear calibration for pilot roll inceptor
 
 
 // Control surface positions calibration parameters

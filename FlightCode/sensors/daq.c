@@ -48,18 +48,16 @@
 
 #if(defined(AIRCRAFT_THOR) || defined(AIRCRAFT_TYR) || defined(AIRCRAFT_FASER) || defined(AIRCRAFT_IBIS) || defined(AIRCRAFT_BALDR))
 	/// Arrays of calibration coefficients using macros defined in aircraft/XXX_config.h.
-	static double pwm_dthr_cal[] = PWMIN_DTHR_CAL;
-	static double pwm_de_cal[] = PWMIN_DE_CAL;
-	static double pwm_dr_cal[] = PWMIN_DR_CAL;
-	static double pwm_da_l_cal[] = PWMIN_DA_L_CAL;
-	static double pwm_da_r_cal[] = PWMIN_DA_R_CAL;
+	static double incp_thr_cal[] 	= THR_INCP_CAL;
+	static double incp_pitch_cal[] 	= PITCH_INCP_CAL;
+	static double incp_yaw_cal[] 	= YAW_INCP_CAL;
+	static double incp_roll_cal[] 	= ROLL_INCP_CAL;
 
 	/// Compute order of polynomial calibration (length of array - 1)
-	static int pwm_dthr_ord = sizeof(pwm_dthr_cal)/sizeof(*pwm_dthr_cal) - 1;
-	static int pwm_de_ord   = sizeof(pwm_de_cal)/sizeof(*pwm_de_cal) - 1;
-	static int pwm_dr_ord   = sizeof(pwm_dr_cal)/sizeof(*pwm_dr_cal) - 1;
-	static int pwm_da_l_ord = sizeof(pwm_da_l_cal)/sizeof(*pwm_da_l_cal) - 1;
-	static int pwm_da_r_ord = sizeof(pwm_da_r_cal)/sizeof(*pwm_da_r_cal) - 1;
+	static int incp_thr_ord 	= sizeof(incp_thr_cal)/sizeof(*incp_thr_cal) - 1;
+	static int incp_pitch_ord   = sizeof(incp_pitch_cal)/sizeof(*incp_pitch_cal) - 1;
+	static int incp_yaw_ord   	= sizeof(incp_yaw_cal)/sizeof(*incp_yaw_cal) - 1;
+	static int incp_roll_ord 	= sizeof(incp_roll_cal)/sizeof(*incp_roll_cal) - 1;
 #endif
 
 
@@ -132,7 +130,8 @@ void get_daq(struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct 
 	// local pointers to keep things tidy
 	struct imu *imuData_ptr = sensorData_ptr->imuData_ptr;
 	struct gps *gpsData_ptr = sensorData_ptr->gpsData_ptr;
-	struct airdata *adData_ptr = sensorData_ptr->adData_ptr;	
+	struct airdata *adData_ptr = sensorData_ptr->adData_ptr;
+	struct inceptor *inceptorData_ptr = sensorData_ptr->inceptorData_ptr;	
 	
 	#ifdef AIRCRAFT_IBIS
 		struct gps *gpsData_l_ptr = sensorData_ptr->gpsData_l_ptr;
@@ -259,11 +258,10 @@ void get_daq(struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct 
 		read_pwm(&pwm_signals[0]);
 
 		// Apply calibration equations
-		controlData_ptr->dthr_in = 	polyval(pwm_dthr_cal, (double)pwm_signals[PWMIN_DTHR_CH],pwm_dthr_ord);
-		controlData_ptr->de_in = 	polyval(pwm_de_cal, (double)pwm_signals[PWMIN_DE_CH]/PWMIN_SCALING,pwm_de_ord);
-		controlData_ptr->dr_in = 	polyval(pwm_dr_cal, (double)pwm_signals[PWMIN_DR_CH]/PWMIN_SCALING,pwm_dr_ord);
-		controlData_ptr->da_l_in = 	polyval(pwm_da_l_cal, (double)pwm_signals[PWMIN_DA_L_CH]/PWMIN_SCALING,pwm_da_l_ord);
-		controlData_ptr->da_r_in = 	polyval(pwm_da_r_cal, (double)pwm_signals[PWMIN_DA_R_CH]/PWMIN_SCALING,pwm_da_r_ord);
+		inceptorData_ptr->throttle = 	polyval(incp_thr_cal, (double)pwm_signals[THR_INCP_CH],incp_thr_ord);
+		inceptorData_ptr->pitch = 	polyval(incp_pitch_cal, (double)pwm_signals[PITCH_INCP_CH]/PWMIN_SCALING,incp_pitch_ord);
+		inceptorData_ptr->yaw = 	polyval(incp_yaw_cal, (double)pwm_signals[YAW_INCP_CH]/PWMIN_SCALING,incp_yaw_ord);
+		inceptorData_ptr->roll = 	polyval(incp_roll_cal, (double)pwm_signals[ROLL_INCP_CH]/PWMIN_SCALING,incp_roll_ord);
 
 		#endif
 
