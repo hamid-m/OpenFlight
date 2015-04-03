@@ -156,8 +156,9 @@ struct inceptor {
 
 /// Mission manager Data structure
 struct mission {
-	unsigned short mode;///< mode variable; 0 = dump data, 1 = manual control, 2 = autopilot control
-	unsigned short run_num;///< counter for number of autopilot engagements
+	unsigned short mode;		///< mode variable; 0 = dump data, 1 = manual control, 2 = autopilot control
+	unsigned short run_num;		///< counter for number of autopilot engagements
+	unsigned short researchNav;	///< mode variable; 0 = standard nav filter, 1 = research nav filter
 };
 
 /// Control Data structure

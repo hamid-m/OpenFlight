@@ -59,6 +59,7 @@ int main(int argc, char **argv) {
 	// Data Structures
 	struct 	mission 		missionData;
 	struct  nav   			navData;
+	struct  nav   			tempNavData;
 	struct  researchNav   	researchNavData;
 	struct  control 		controlData;
 	struct  imu   			imuData;
@@ -141,8 +142,9 @@ int main(int argc, char **argv) {
 	while(1){
 		missionData.mode = 1; 						// initialize to manual mode
 		missionData.run_num = 0; 					// reset run counter
+		missionData.researchNav = 0;				// initialize to use standard nav filter in feedback
 		navData.err_type = got_invalid;				// initialize nav filter as invalid
-		researchNavData.err_type = got_invalid;	// initialize research nav filter as invalid
+		researchNavData.err_type = got_invalid;		// initialize research nav filter as invalid
 
 		//initialize real time clock at zero
 		reset_Time();
@@ -172,7 +174,7 @@ int main(int argc, char **argv) {
 			//**** NAVIGATION ********************************************************
 			if(navData.err_type == got_invalid){ // check if NAV filter has been initialized
 
-					if(gpsData.navValid == 0) // check if GPS is locked, comment out if using micronav_ahrs
+					//if(gpsData.navValid == 0) // check if GPS is locked, comment out if using micronav_ahrs
 
 					init_nav(&sensorData, &navData, &controlData);// Initialize NAV filter
 			}
@@ -182,7 +184,7 @@ int main(int argc, char **argv) {
 			//**** RESEARCH NAVIGATION ***********************************************
 			if(researchNavData.err_type == got_invalid){ // check if research NAV filter has been initialized
 
-					if(gpsData.navValid == 0) // check if GPS is locked, comment out if using micronav_ahrs
+					//if(gpsData.navValid == 0) // check if GPS is locked, comment out if using micronav_ahrs
 
 					init_researchNav(&sensorData, &researchNavData);// Initialize research NAV filter
 			}
@@ -191,6 +193,11 @@ int main(int argc, char **argv) {
 
 			etime_nav = get_Time() - tic - etime_daq; // compute execution time			
 			//************************************************************************
+
+			if(missionData.researchNav == 1){	// use research nav filter for feedback
+				memcpy(&tempNavData,&navData,sizeof(navData));					// copy nav data into temp struct
+				memcpy(&navData,&researchNavData,sizeof(researchNavData));		// copy research nav data into nav data
+			}
 
 			if (missionData.mode == 2) { // autopilot mode
 				if (t0_latched == FALSE) {
@@ -242,6 +249,10 @@ int main(int argc, char **argv) {
 			etime_actuators = get_Time() - tic - ACTUATORS_OFFSET; // compute execution time
 			//************************************************************************
 
+			if(missionData.researchNav == 1){	// use research nav filter for feedback
+				memcpy(&navData,&tempNavData,sizeof(tempNavData));					// copy nav data back for data logging
+			}
+			
 			//**** DATA LOGGING ******************************************************
 			datalogger();
 			etime_datalog = get_Time() - tic - etime_actuators - ACTUATORS_OFFSET; // compute execution time

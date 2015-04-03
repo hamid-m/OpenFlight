@@ -26,8 +26,8 @@ GUIDANCE = guidance/straight_level.c
 
 ##### NAVIGATION #####
 # Point to the desired navigation code here
-#NAVIGATION = navigation/micronav_ahrs.c
-NAVIGATION = navigation/EKF_15state_quat.c
+NAVIGATION = navigation/micronav_ahrs.c
+#NAVIGATION = navigation/EKF_15state_quat.c
 
 ##### RESEARCH NAVIGATION #####
 # Point to the desired navigation code here
