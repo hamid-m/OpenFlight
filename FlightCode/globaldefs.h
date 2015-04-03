@@ -146,6 +146,14 @@ struct surface {
 	double df_r_pos;	///< [rad], measured right flap position, +TED
 };
 
+/// Pilot inceptor Data structure
+struct inceptor {
+	double throttle;	///< throttle stick command from the pilot, ND
+	double pitch;		///< pitch stick command from the pilot, ND
+	double yaw;			///< yaw stick command from the pilot, ND
+	double roll;		///< roll stick command from the pilot, ND
+};
+
 /// Mission manager Data structure
 struct mission {
 	unsigned short mode;///< mode variable; 0 = dump data, 1 = manual control, 2 = autopilot control
@@ -154,14 +162,6 @@ struct mission {
 
 /// Control Data structure
 struct control {
-	double dthr_in;		///< [0-1], throttle command from R/C
-	double de_in;		///< [rad], elevator command, +TED, from R/C
-	double dr_in;		///< [rad], rudder command, +TEL, from R/C
-	double da_l_in;		///< [rad], left aileron command, +TED, from R/C
-	double da_r_in;		///< [rad], right aileron command, +TED, from R/C
-	double df_l_in;		///< [rad], left flap command, +TED, from R/C
-	double df_r_in;		///< [rad], right flap command, +TED, from R/C
-	double dg_in;		///< [rad], gear command, from R/C, controls RxMux
 	double dthr;		///< [0-1], throttle command
 	double de;			///< [rad], elevator command, +TED
 	double dr; 			///< [rad], rudder command, +TEL
@@ -222,12 +222,13 @@ struct nav {
 
 /// Combined sensor data structure
 struct sensordata {
-	struct imu *imuData_ptr; 		///< pointer to imu data structure
-	struct gps *gpsData_ptr;		///< pointer to gps data structure
-	struct gps *gpsData_l_ptr;		///< pointer to left gps data structure
-	struct gps *gpsData_r_ptr;		///< pointer to right gps data structure
-	struct airdata *adData_ptr;		///< pointer to airdata data structure
-	struct surface *surfData_ptr;	///< pointer to surface data structure
+	struct imu *imuData_ptr; 			///< pointer to imu data structure
+	struct gps *gpsData_ptr;			///< pointer to gps data structure
+	struct gps *gpsData_l_ptr;			///< pointer to left gps data structure
+	struct gps *gpsData_r_ptr;			///< pointer to right gps data structure
+	struct airdata *adData_ptr;			///< pointer to airdata data structure
+	struct surface *surfData_ptr;		///< pointer to surface data structure
+	struct inceptor *inceptorData_ptr;	///< pointer to pilot inceptor data structure
 };
 
 /// Datalogging data structure

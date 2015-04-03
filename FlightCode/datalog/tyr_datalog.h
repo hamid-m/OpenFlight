@@ -17,7 +17,7 @@
 #define LOG_ARRAY_SIZE 90000 ///< Number of data points in the logging array. 50 Hz * 60 sec/min * 30 minutes = 90000
 
 #define NUM_DOUBLE_VARS 6	///< Number of variables that will be logged as doubles
-#define NUM_FLOAT_VARS 66	///< Number of variables that will be logged as floats
+#define NUM_FLOAT_VARS 63	///< Number of variables that will be logged as floats
 #define NUM_INT_VARS 2		///< Number of variables that will be logged as ints
 #define NUM_SHORT_VARS 6	///< Number of variables that will be logged as shorts
 
@@ -52,8 +52,8 @@ char* saveAsFloatNames[NUM_FLOAT_VARS] = {
 			"p_cmd", "q_cmd", "r_cmd",
 			"ias_cmd","h_cmd",
 			"gndtrk_cmd","gamma_cmd",
-			"dthr_in","de_in", "dr_in",
-			"da_l_in", "da_r_in","df_l_in","df_r_in",
+			"thr_incp","pitch_incp", "yaw_incp",
+			"roll_incp",
 			"de", "da_l", "da_r",
 			"df_l", "df_r", "dr", "dthr",
 			"etime_daq", "etime_nav", "etime_guidance",
@@ -79,8 +79,8 @@ double* saveAsFloatPointers[NUM_FLOAT_VARS] = {
 			&controlData.p_cmd, &controlData.q_cmd, &controlData.r_cmd,
 			&controlData.ias_cmd, &controlData.h_cmd,
 			&controlData.gndtrk_cmd, &controlData.gamma_cmd,
-			&controlData.dthr_in, &controlData.de_in, &controlData.dr_in,
-			&controlData.da_l_in, &controlData.da_r_in, &controlData.df_l_in, &controlData.df_r_in,
+			&inceptorData.throttle, &inceptorData.pitch, &inceptorData.yaw,
+			&inceptorData.roll,
 			&controlData.de, &controlData.da_l, &controlData.da_r, 
 			&controlData.df_l, &controlData.df_r, &controlData.dr, &controlData.dthr,
 			&etime_daq, &etime_nav, &etime_guidance,

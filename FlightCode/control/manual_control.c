@@ -21,11 +21,11 @@
 /// Return control outputs based on references and feedback signals.
 extern void get_control(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr, struct mission *missionData_ptr) {
 
-	controlData_ptr->dthr = controlData_ptr->dthr_in; // throttle
-    controlData_ptr->de = controlData_ptr->de_in; // Elevator deflection [rad]
-    controlData_ptr->dr = controlData_ptr->dr_in; // Rudder deflection [rad]
-	controlData_ptr->da_l = controlData_ptr->da_l_in; // left aileron
-    controlData_ptr->da_r = controlData_ptr->da_r_in; // Aileron deflection [rad], right
+	controlData_ptr->dthr = sensorData_ptr->inceptorData_ptr->throttle; // throttle
+    controlData_ptr->de = sensorData_ptr->inceptorData_ptr->pitch; 		// Elevator deflection [rad]
+    controlData_ptr->dr = sensorData_ptr->inceptorData_ptr->yaw; 		// Rudder deflection [rad]
+	controlData_ptr->da_l = sensorData_ptr->inceptorData_ptr->roll; 	// left aileron
+    controlData_ptr->da_r = -1*sensorData_ptr->inceptorData_ptr->roll; // Aileron deflection [rad], right
 
 	subtract_trim_bias(controlData_ptr);
 }

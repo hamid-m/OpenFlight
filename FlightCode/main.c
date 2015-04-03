@@ -63,6 +63,7 @@ int main(int argc, char **argv) {
 	struct  gps   		gpsData;
 	struct  airdata 	adData;
 	struct  surface 	surfData;
+	struct  inceptor 	inceptorData;
 
 	// Additional data structures for GPS FASER
 	struct  gps   gpsData_l;
@@ -112,6 +113,7 @@ int main(int argc, char **argv) {
 	sensorData.gpsData_r_ptr = &gpsData_r;
 	sensorData.adData_ptr = &adData;
 	sensorData.surfData_ptr = &surfData;
+	sensorData.inceptorData_ptr = &inceptorData;
 
 	// Set main thread to highest priority
 	struct sched_param param;
