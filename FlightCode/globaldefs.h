@@ -218,6 +218,19 @@ struct nav {
 	double Pgsf[3];	///< [rad], covariance estimate for rate gyro scale factor
 	enum errdefs err_type;	///< NAV filter status
 	double time;			///< [sec], timestamp of NAV filter
+	double wn;			///< [m/s], estimated wind speed in the north direction
+	double we;			///< [m/s], estimated wind speed in the east direction
+	double wd;			///< [m/s], estimated wind speed in the down direction
+	double signal_0;     ///< user defined dummy variable
+	double signal_1;     ///< user defined dummy variable
+	double signal_2;     ///< user defined dummy variable
+	double signal_3;     ///< user defined dummy variable
+	double signal_4;     ///< user defined dummy variable
+	double signal_5;     ///< user defined dummy variable
+	double signal_6;     ///< user defined dummy variable
+	double signal_7;     ///< user defined dummy variable
+	double signal_8;     ///< user defined dummy variable
+	double signal_9;     ///< user defined dummy variable
 };
 
 /// Combined sensor data structure
