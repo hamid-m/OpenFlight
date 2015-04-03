@@ -29,6 +29,10 @@ GUIDANCE = guidance/straight_level.c
 #NAVIGATION = navigation/micronav_ahrs.c
 NAVIGATION = navigation/EKF_15state_quat.c
 
+##### RESEARCH NAVIGATION #####
+# Point to the desired navigation code here
+RESEARCHNAVIGATION = researchNavigation/empty_nav.c
+
 ##### FLIGHT CONTROL LAW #####
 # Point to the desired flight control law code here
 CONTROL =  control/baseline_control.c
@@ -126,6 +130,7 @@ datalog/datalogger.c \
 sensors/daq.c \
 $(GUIDANCE) \
 $(NAVIGATION) \
+$(RESEARCHNAVIGATION) \
 $(CONTROL) \
 $(SYSTEM_ID) \
 $(SURFACE_FAULT) \
@@ -196,6 +201,7 @@ display:
 	@ echo "DATALOG = $(DATALOG_CONFIG)"
 	@ echo "GUIDANCE = $(GUIDANCE)"
 	@ echo "NAVIGATION = $(NAVIGATION)"
+	@ echo "RESEARCH NAVIGATION = $(RESEARCHNAVIGATION)"
 	@ echo "CONTROL = $(CONTROL)"
 	@ echo "SYSTEM_ID = $(SYSTEM_ID)"
 	@ echo "SURFACE_FAULT = $(SURFACE_FAULT)"

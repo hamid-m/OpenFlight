@@ -233,6 +233,46 @@ struct nav {
 	double signal_9;     ///< user defined dummy variable
 };
 
+/// Research Navigation Filter Data Structure
+struct researchNav {
+	double lat;		///< [rad], geodetic latitude estimate
+	double lon;		///< [rad], geodetic longitude estimate
+	double alt;		///< [m], altitude relative to WGS84 estimate
+	double vn;		///< [m/sec], north velocity estimate
+	double ve;		///< [m/sec], east velocity estimate
+	double vd;		///< [m/sec], down velocity estimate
+	double phi;		///< [rad], Euler roll angle estimate
+	double the;		///< [rad], Euler pitch angle estimate
+	double psi;		///< [rad], Euler yaw angle estimate
+	double quat[4];	///< Quaternions estimate
+	double ab[3];	///< [m/sec^2], accelerometer bias estimate
+	double gb[3];	///< [rad/sec], rate gyro bias estimate
+	double asf[3];	///< [m/sec^2], accelerometer scale factor estimate
+	double gsf[3];	///< [rad/sec], rate gyro scale factor estimate
+	double Pp[3];	///< [rad], covariance estimate for position
+	double Pv[3];	///< [rad], covariance estimate for velocity
+	double Pa[3];	///< [rad], covariance estimate for angles
+	double Pab[3];	///< [rad], covariance estimate for accelerometer bias
+	double Pgb[3];	///< [rad], covariance estimate for rate gyro bias
+	double Pasf[3];	///< [rad], covariance estimate for accelerometer scale factor
+	double Pgsf[3];	///< [rad], covariance estimate for rate gyro scale factor
+	enum errdefs err_type;	///< NAV filter status
+	double time;			///< [sec], timestamp of NAV filter
+	double wn;			///< [m/s], estimated wind speed in the north direction
+	double we;			///< [m/s], estimated wind speed in the east direction
+	double wd;			///< [m/s], estimated wind speed in the down direction
+	double signal_0;     ///< user defined dummy variable
+	double signal_1;     ///< user defined dummy variable
+	double signal_2;     ///< user defined dummy variable
+	double signal_3;     ///< user defined dummy variable
+	double signal_4;     ///< user defined dummy variable
+	double signal_5;     ///< user defined dummy variable
+	double signal_6;     ///< user defined dummy variable
+	double signal_7;     ///< user defined dummy variable
+	double signal_8;     ///< user defined dummy variable
+	double signal_9;     ///< user defined dummy variable
+};
+
 /// Combined sensor data structure
 struct sensordata {
 	struct imu *imuData_ptr; 			///< pointer to imu data structure

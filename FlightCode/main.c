@@ -30,6 +30,7 @@
 #include "sensors/daq_interface.h"
 #include "actuators/actuator_interface.h"
 #include "navigation/nav_interface.h"
+#include "researchNavigation/researchnav_interface.h"
 #include "guidance/guidance_interface.h"
 #include "control/control_interface.h"
 #include "system_id/systemid_interface.h"
@@ -56,14 +57,15 @@ trigger_actuators,  trigger_datalogger, trigger_telemetry;
 int main(int argc, char **argv) {
 
 	// Data Structures
-	struct 	mission 	missionData;
-	struct  nav   		navData;
-	struct  control 	controlData;
-	struct  imu   		imuData;
-	struct  gps   		gpsData;
-	struct  airdata 	adData;
-	struct  surface 	surfData;
-	struct  inceptor 	inceptorData;
+	struct 	mission 		missionData;
+	struct  nav   			navData;
+	struct  researchNav   	researchNavData;
+	struct  control 		controlData;
+	struct  imu   			imuData;
+	struct  gps   			gpsData;
+	struct  airdata 		adData;
+	struct  surface 		surfData;
+	struct  inceptor 		inceptorData;
 
 	// Additional data structures for GPS FASER
 	struct  gps   gpsData_l;
@@ -137,9 +139,10 @@ int main(int argc, char **argv) {
 	init_telemetry();
 
 	while(1){
-		missionData.mode = 1; 				// initialize to manual mode
-		missionData.run_num = 0; 			// reset run counter
-		navData.err_type = got_invalid;		// initialize nav filter as invalid
+		missionData.mode = 1; 						// initialize to manual mode
+		missionData.run_num = 0; 					// reset run counter
+		navData.err_type = got_invalid;				// initialize nav filter as invalid
+		researchNavData.err_type = got_invalid;	// initialize research nav filter as invalid
 
 		//initialize real time clock at zero
 		reset_Time();
@@ -175,6 +178,16 @@ int main(int argc, char **argv) {
 			}
 			else
 				get_nav(&sensorData, &navData, &controlData);// Call NAV filter
+			
+			//**** RESEARCH NAVIGATION ***********************************************
+			if(researchNavData.err_type == got_invalid){ // check if research NAV filter has been initialized
+
+					if(gpsData.navValid == 0) // check if GPS is locked, comment out if using micronav_ahrs
+
+					init_researchNav(&sensorData, &researchNavData);// Initialize research NAV filter
+			}
+			else
+				get_researchNav(&sensorData, &researchNavData);// Call research NAV filter
 
 			etime_nav = get_Time() - tic - etime_daq; // compute execution time			
 			//************************************************************************
