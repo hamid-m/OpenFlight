@@ -24,6 +24,10 @@ AIRCRAFT = THOR
 GUIDANCE = guidance/straight_level.c
 #GUIDANCE = guidance/waypoint_guidance.c
 
+##### RESEARCH GUIDANCE LAW #####
+# Point to the desired guidance code here
+RESEARCHGUIDANCE = researchGuidance/empty_guidance.c
+
 ##### NAVIGATION #####
 # Point to the desired navigation code here
 NAVIGATION = navigation/micronav_ahrs.c
@@ -129,6 +133,7 @@ telemetry/telemetry.c \
 datalog/datalogger.c \
 sensors/daq.c \
 $(GUIDANCE) \
+$(RESEARCHGUIDANCE) \
 $(NAVIGATION) \
 $(RESEARCHNAVIGATION) \
 $(CONTROL) \
@@ -200,6 +205,7 @@ display:
 	@ echo "AIRCRAFT = $(AIRCRAFT_CONFIG)"
 	@ echo "DATALOG = $(DATALOG_CONFIG)"
 	@ echo "GUIDANCE = $(GUIDANCE)"
+	@ echo "RESEARCH GUIDANCE = $(RESEARCHGUIDANCE)"
 	@ echo "NAVIGATION = $(NAVIGATION)"
 	@ echo "RESEARCH NAVIGATION = $(RESEARCHNAVIGATION)"
 	@ echo "CONTROL = $(CONTROL)"

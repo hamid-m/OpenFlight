@@ -32,6 +32,7 @@
 #include "navigation/nav_interface.h"
 #include "researchNavigation/researchnav_interface.h"
 #include "guidance/guidance_interface.h"
+#include "researchGuidance/researchguidance_interface.h"
 #include "control/control_interface.h"
 #include "system_id/systemid_interface.h"
 #include "faults/fault_interface.h"
@@ -57,16 +58,18 @@ trigger_actuators,  trigger_datalogger, trigger_telemetry;
 int main(int argc, char **argv) {
 
 	// Data Structures
-	struct 	mission 		missionData;
-	struct  nav   			navData;
-	struct  nav   			tempNavData;
-	struct  researchNav   	researchNavData;
-	struct  control 		controlData;
-	struct  imu   			imuData;
-	struct  gps   			gpsData;
-	struct  airdata 		adData;
-	struct  surface 		surfData;
-	struct  inceptor 		inceptorData;
+	struct 	mission 			missionData;
+	struct  nav   				navData;
+	struct  nav   				tempNavData;
+	struct  researchNav   		researchNavData;
+	struct  control 			controlData;
+	struct  researchControl 	researchControlData;
+	struct  control 			tempControlData;
+	struct  imu   				imuData;
+	struct  gps   				gpsData;
+	struct  airdata 			adData;
+	struct  surface 			surfData;
+	struct  inceptor 			inceptorData;
 
 	// Additional data structures for GPS FASER
 	struct  gps   gpsData_l;
@@ -143,6 +146,7 @@ int main(int argc, char **argv) {
 		missionData.mode = 1; 						// initialize to manual mode
 		missionData.run_num = 0; 					// reset run counter
 		missionData.researchNav = 0;				// initialize to use standard nav filter in feedback
+		missionData.researchGuidance = 0;			// initialize to use standard guidance in feedback
 		navData.err_type = got_invalid;				// initialize nav filter as invalid
 		researchNavData.err_type = got_invalid;		// initialize research nav filter as invalid
 
@@ -209,6 +213,15 @@ int main(int argc, char **argv) {
 
 				//**** GUIDANCE **********************************************************
 				get_guidance(time, &sensorData, &navData, &controlData, &missionData);
+				
+				//**** RESEARCH GUIDANCE *************************************************
+				get_researchGuidance(time, &sensorData, &navData, &researchControlData, &missionData);
+				
+				if(missionData.researchGuidance == 1){	// use research guidance filter for feedback
+					memcpy(&tempControlData,&controlData,sizeof(controlData));					// copy control data into temp struct
+					memcpy(&controlData,&researchControlData,sizeof(researchControlData));		// copy research control data into control data
+				}
+				
 				etime_guidance= get_Time() - tic - etime_nav - etime_daq; // compute execution time
 				//************************************************************************		
 

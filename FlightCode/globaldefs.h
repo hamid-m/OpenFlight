@@ -156,13 +156,47 @@ struct inceptor {
 
 /// Mission manager Data structure
 struct mission {
-	unsigned short mode;		///< mode variable; 0 = dump data, 1 = manual control, 2 = autopilot control
-	unsigned short run_num;		///< counter for number of autopilot engagements
-	unsigned short researchNav;	///< mode variable; 0 = standard nav filter, 1 = research nav filter
+	unsigned short mode;				///< mode variable; 0 = dump data, 1 = manual control, 2 = autopilot control
+	unsigned short run_num;				///< counter for number of autopilot engagements
+	unsigned short researchNav;			///< mode variable; 0 = standard nav filter, 1 = research nav filter
+	unsigned short researchGuidance;	///< mode variable; 0 = standard guidance, 1 = research guidance
 };
 
 /// Control Data structure
 struct control {
+	double dthr;		///< [0-1], throttle command
+	double de;			///< [rad], elevator command, +TED
+	double dr; 			///< [rad], rudder command, +TEL
+	double da_l;		///< [rad], left aileron command, +TED
+	double da_r;		///< [rad], right aileron command, +TED
+	double df_l;		///< [rad], left flap command, +TED
+	double df_r;		///< [rad], right flap command, +TED
+	double phi_cmd;		///< [rad], Euler roll angle command
+	double theta_cmd;	///< [rad], Euler pitch angle command
+	double psi_cmd;		///< [rad], Euler yaw angle command
+	double p_cmd;		///< [rad/sec], body axis roll rate command
+	double q_cmd;		///< [rad/sec], body axis pitch rate command
+	double r_cmd;		///< [rad/sec], body axis yaw rate command
+	double ias_cmd;		///< [m/sec], airspeed command
+	double h_cmd;		///< [m], altitude command
+	double gndtrk_cmd;	///< [rad], ground track angle command, relative to true north
+	double aoa_cmd;		///< [rad], angle of attack command
+	double aos_cmd;		///< [rad], angle of sideslip command
+	double gamma_cmd;	///< [rad], flight path angle command
+	double signal_0;     ///< user defined dummy variable
+	double signal_1;     ///< user defined dummy variable
+	double signal_2;     ///< user defined dummy variable
+	double signal_3;     ///< user defined dummy variable
+	double signal_4;     ///< user defined dummy variable
+	double signal_5;     ///< user defined dummy variable
+	double signal_6;     ///< user defined dummy variable
+	double signal_7;     ///< user defined dummy variable
+	double signal_8;     ///< user defined dummy variable
+	double signal_9;     ///< user defined dummy variable
+};
+
+/// Research Control Data structure
+struct researchControl {
 	double dthr;		///< [0-1], throttle command
 	double de;			///< [rad], elevator command, +TED
 	double dr; 			///< [rad], rudder command, +TEL
