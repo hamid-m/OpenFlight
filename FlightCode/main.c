@@ -186,10 +186,10 @@ int main(int argc, char **argv) {
 
 					//if(gpsData.navValid == 0) // check if GPS is locked, comment out if using micronav_ahrs
 
-					init_researchNav(&sensorData, &researchNavData);// Initialize research NAV filter
+					init_researchNav(&sensorData, &navData, &researchNavData);// Initialize research NAV filter
 			}
 			else
-				get_researchNav(&sensorData, &researchNavData);// Call research NAV filter
+				get_researchNav(&sensorData, &navData, &researchNavData);// Call research NAV filter
 
 			etime_nav = get_Time() - tic - etime_daq; // compute execution time			
 			//************************************************************************
