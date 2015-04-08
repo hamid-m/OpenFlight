@@ -160,6 +160,7 @@ struct mission {
 	unsigned short run_num;				///< counter for number of autopilot engagements
 	unsigned short researchNav;			///< mode variable; 0 = standard nav filter, 1 = research nav filter
 	unsigned short researchGuidance;	///< mode variable; 0 = standard guidance, 1 = research guidance
+	unsigned short haveGPS;				///< mode variable; 0 = no GPS, 1 = have GPS
 };
 
 /// Control Data structure

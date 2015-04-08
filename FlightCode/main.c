@@ -147,6 +147,7 @@ int main(int argc, char **argv) {
 		missionData.run_num = 0; 					// reset run counter
 		missionData.researchNav = 0;				// initialize to use standard nav filter in feedback
 		missionData.researchGuidance = 0;			// initialize to use standard guidance in feedback
+		missionData.haveGPS = 1;					// initialize to have GPS
 		navData.err_type = got_invalid;				// initialize nav filter as invalid
 		researchNavData.err_type = got_invalid;		// initialize research nav filter as invalid
 
@@ -190,10 +191,10 @@ int main(int argc, char **argv) {
 
 					//if(gpsData.navValid == 0) // check if GPS is locked, comment out if using micronav_ahrs
 
-					init_researchNav(&sensorData, &navData, &researchNavData);// Initialize research NAV filter
+					init_researchNav(&sensorData, &missionData, &navData, &researchNavData);// Initialize research NAV filter
 			}
 			else
-				get_researchNav(&sensorData, &navData, &researchNavData);// Call research NAV filter
+				get_researchNav(&sensorData, &missionData, &navData, &researchNavData);// Call research NAV filter
 
 			etime_nav = get_Time() - tic - etime_daq; // compute execution time			
 			//************************************************************************
