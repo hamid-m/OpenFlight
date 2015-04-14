@@ -101,6 +101,13 @@ static double dr; // Delta rudder
 	static double v_gain[2] 	= {0.091, 0.020};
 	static double head_gain 	= 1.2;
 #endif
+#ifdef HIL_SIM
+	static double roll_gain[3]  = {-0.64,-0.20,-0.07};  // PI gains for roll tracker and roll damper
+	static double pitch_gain[3] = {-0.90,-0.30,-0.08};  // PI gains for theta tracker and pitch damper
+	static double alt_gain[2] 	= {0.023,0.0010}; 		// PI gains for altitude tracker
+	static double v_gain[2] 	= {0.15, 0.040};		// PI gains for speed tracker
+	static double head_gain 	= 1.5;					// P gain for heading tracker
+#endif
 static double da; // Delta aileron
 static double de; // Delta elevator
 static double dthr; // Delta throttle
@@ -136,6 +143,9 @@ extern void get_control(double time, struct sensordata *sensorData_ptr, struct n
 #endif
 #ifdef AIRCRAFT_BALDR
 	double base_pitch_cmd= 0.0872664;  // (Faser Trim value) use 5 deg (0.0872664  rad) for flight, use 4.669 deg (0.0814990 rad) in sim
+#endif
+#ifdef HIL_SIM
+	double base_pitch_cmd= 0.0872664;  // (Trim value) use 5 deg (0.0872664 rad) for flight, use 3.082 deg (0.0537910 rad) in sim
 #endif
 	double phi   = navData_ptr->phi;					    // Roll angle
 	double theta = navData_ptr->the - base_pitch_cmd; 	    // Pitch angle: subtract theta trim value to convert to delta coordinates

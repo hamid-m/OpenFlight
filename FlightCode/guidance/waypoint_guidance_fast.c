@@ -87,7 +87,9 @@ extern void get_guidance(double time, struct sensordata *sensorData_ptr, struct 
 	#ifdef AIRCRAFT_BALDR
 		controlData_ptr->ias_cmd = 23;
 	#endif
-
+	#ifdef HIL_SIM
+		controlData_ptr->ias_cmd = 17;
+	#endif
 
 	// Initialization of algorithm and variables	
     if (guide_init==0)  // init variables
