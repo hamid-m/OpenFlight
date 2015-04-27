@@ -26,16 +26,19 @@ GUIDANCE = guidance/straight_level.c
 
 ##### RESEARCH GUIDANCE LAW #####
 # Point to the desired guidance code here
-RESEARCHGUIDANCE = researchGuidance/empty_guidance.c
+RESEARCHGUIDANCE = researchGuidance/jrunnels_research_guidance_2015_04_23_b.c
 
 ##### NAVIGATION #####
 # Point to the desired navigation code here
-NAVIGATION = navigation/micronav_ahrs.c
-#NAVIGATION = navigation/EKF_15state_quat.c
+#NAVIGATION = navigation/micronav_ahrs.c
+NAVIGATION = navigation/EKF_15state_quat.c
 
 ##### RESEARCH NAVIGATION #####
 # Point to the desired navigation code here
-RESEARCHNAVIGATION = researchNavigation/empty_nav.c
+RESEARCHNAVIGATION = researchNavigation/empty_nav_jrunnels.c
+
+##### MISSION MANAGER #####
+MISSION = mission/waypoint_engage.c
 
 ##### FLIGHT CONTROL LAW #####
 # Point to the desired flight control law code here
@@ -136,6 +139,7 @@ $(GUIDANCE) \
 $(RESEARCHGUIDANCE) \
 $(NAVIGATION) \
 $(RESEARCHNAVIGATION) \
+$(MISSION) \
 $(CONTROL) \
 $(SYSTEM_ID) \
 $(SURFACE_FAULT) \
@@ -208,6 +212,7 @@ display:
 	@ echo "RESEARCH GUIDANCE = $(RESEARCHGUIDANCE)"
 	@ echo "NAVIGATION = $(NAVIGATION)"
 	@ echo "RESEARCH NAVIGATION = $(RESEARCHNAVIGATION)"
+	@ echo "MISSION MANAGER = $(MISSION)"
 	@ echo "CONTROL = $(CONTROL)"
 	@ echo "SYSTEM_ID = $(SYSTEM_ID)"
 	@ echo "SURFACE_FAULT = $(SURFACE_FAULT)"
