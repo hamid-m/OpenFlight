@@ -14,6 +14,8 @@
 #ifndef RESEARCHGUIDANCE_INTERFACE_H_
 #define RESEARCHGUIDANCE_INTERFACE_H_
 
+//#include "../control/heading_tracker.c"
+
 /// Standard function to call the guidance law
 /*!
  * \ingroup guidance_fcns

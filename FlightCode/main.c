@@ -248,6 +248,7 @@ int main(int argc, char **argv) {
 					t0_latched = FALSE;
 				}
 				reset_control(&controlData); // reset controller states and set get_control surfaces to zero
+				close_guidance();
 			} // end if (controlData.mode == 2) 
 
 			// Add trim biases to get_control surface commands

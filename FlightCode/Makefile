@@ -21,12 +21,12 @@ AIRCRAFT = THOR
 
 ##### GUIDANCE LAW #####
 # Point to the desired guidance code here
-GUIDANCE = guidance/straight_level.c
+GUIDANCE = guidance/waypoint_guidance_fast_aem5333.c
 #GUIDANCE = guidance/waypoint_guidance.c
 
 ##### RESEARCH GUIDANCE LAW #####
 # Point to the desired guidance code here
-RESEARCHGUIDANCE = researchGuidance/jrunnels_research_guidance_2015_04_23_b.c
+RESEARCHGUIDANCE = researchGuidance/empty_guidance.c
 
 ##### NAVIGATION #####
 # Point to the desired navigation code here
@@ -35,7 +35,7 @@ NAVIGATION = navigation/EKF_15state_quat.c
 
 ##### RESEARCH NAVIGATION #####
 # Point to the desired navigation code here
-RESEARCHNAVIGATION = researchNavigation/empty_nav_jrunnels.c
+RESEARCHNAVIGATION = researchNavigation/empty_nav.c
 
 ##### MISSION MANAGER #####
 MISSION = mission/waypoint_engage.c
