@@ -67,7 +67,7 @@ static double integrator[1] = {0};
 
 //////////////////////////////////////////////////////////////
 // Waypoint definition
-#define numofwaypoints 2
+#define numofwaypoints 3
 static short nextwaypoint=0;
 
 // order: NO, EA, IAS, alt
@@ -75,7 +75,8 @@ static short nextwaypoint=0;
 
 
 static double waypoints[numofwaypoints][4] =    {{0.0, 0.0, 20.0, 60.0},
-{ 0.0, -725.0, 20.0, 60.0 },
+{ 0.0, -50, 20.0, 60.0 },
+{ 0.0, -125, 20.0, 60.0 },
 };
 
 
@@ -129,8 +130,8 @@ extern void get_guidance(double time, struct sensordata *sensorData_ptr, struct 
     
     if (guide_start==0)
     {
-		pos_lla[0][0] = 44.725731*D2R;
-		pos_lla[1][0] = -93.0735000*D2R;
+		pos_lla[0][0] =  44.725699*D2R;
+		pos_lla[1][0] = -93.073960*D2R;
         pos_lla[2][0]=navData_ptr->alt;
         
         // transform starting point from LLA to ECEF
