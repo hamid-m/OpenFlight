@@ -179,7 +179,7 @@ int main(int argc, char **argv) {
 			//**** NAVIGATION ********************************************************
 			if(navData.err_type == got_invalid){ // check if NAV filter has been initialized
 
-					//if(gpsData.navValid == 0) // check if GPS is locked, comment out if using micronav_ahrs
+					if(gpsData.navValid == 0) // check if GPS is locked, comment out if using micronav_ahrs
 
 					init_nav(&sensorData, &navData, &controlData);// Initialize NAV filter
 			}
@@ -189,7 +189,7 @@ int main(int argc, char **argv) {
 			//**** RESEARCH NAVIGATION ***********************************************
 			if(researchNavData.err_type == got_invalid){ // check if research NAV filter has been initialized
 
-					//if(gpsData.navValid == 0) // check if GPS is locked, comment out if using micronav_ahrs
+					if(gpsData.navValid == 0) // check if GPS is locked, comment out if using micronav_ahrs
 
 					init_researchNav(&sensorData, &missionData, &navData, &researchNavData);// Initialize research NAV filter
 			}
@@ -198,10 +198,9 @@ int main(int argc, char **argv) {
 
 			etime_nav = get_Time() - tic - etime_daq; // compute execution time			
 			//************************************************************************
-
-			if(missionData.researchNav == 1){	// use research nav filter for feedback
-				memcpy(&tempNavData,&navData,sizeof(navData));					// copy nav data into temp struct
-				memcpy(&navData,&researchNavData,sizeof(researchNavData));		// copy research nav data into nav data
+			memcpy(&tempNavData,&navData,sizeof(navData));	// copy nav data into temp struct
+			if(missionData.researchNav == 1){	// use research nav filter for feedback	
+				memcpy(&navData,&researchNavData,sizeof(researchNavData));	// copy research nav data into nav data
 			}
 
 			if (missionData.mode == 2) { // autopilot mode
@@ -217,9 +216,8 @@ int main(int argc, char **argv) {
 				
 				//**** RESEARCH GUIDANCE *************************************************
 				get_researchGuidance(time, &sensorData, &navData, &researchControlData, &missionData);
-				
+				memcpy(&tempControlData,&controlData,sizeof(controlData));	// copy control data into temp struct
 				if(missionData.researchGuidance == 1){	// use research guidance filter for feedback
-					memcpy(&tempControlData,&controlData,sizeof(controlData));					// copy control data into temp struct
 					memcpy(&controlData,&researchControlData,sizeof(researchControlData));		// copy research control data into control data
 				}
 				
@@ -265,6 +263,9 @@ int main(int argc, char **argv) {
 
 			if(missionData.researchNav == 1){	// use research nav filter for feedback
 				memcpy(&navData,&tempNavData,sizeof(tempNavData));					// copy nav data back for data logging
+			}
+			if(missionData.researchGuidance == 1){	// use research guidance for feedback
+				memcpy(&controlData,&tempControlData,sizeof(tempControlData));		// copy control data back for data logging
 			}
 			
 			//**** DATA LOGGING ******************************************************
