@@ -23,10 +23,13 @@
 
 
 //////////////////////////////////////////////////////////////
-//#include "../utils/matrix.c" //Required for SIL sim only. Also must comment out #include <unistd.h> and #include <termios.h> inside matrix.c
+#ifdef SIL_SIM
+    #include "../utils/matrix.c" //Required for SIL sim only. Also must comment out #include <unistd.h> and #include <termios.h> inside matrix.c
 
-//#include "../aircraft/thor_config.h"  // for SIL sim only, use "thor" or "faser"
-#include AIRCRAFT_UP1DIR
+    #include "../aircraft/thor_config.h"  // for SIL sim only, use "thor" or "faser"
+#else
+    #include AIRCRAFT_UP1DIR
+#endif
 //////////////////////////////////////////////////////////////
 
 
