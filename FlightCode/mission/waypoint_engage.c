@@ -19,10 +19,16 @@ extern void run_mission(struct sensordata *sensorData_ptr, struct nav *navData_p
 	z = R*sin(navData_ptr->lon);
 	
 	d = pow(pow(x-xt,2)+pow(y-yt,2)+pow(z-zt,2),0.5);
-	
-	if(d<10){
-		missionData_ptr->haveGPS = 0;
-		missionData_ptr->researchNav = 1;
-		missionData_ptr->researchGuidance = 1;
+	if(missionData_ptr->mode == 2){
+		if(d<10){
+			missionData_ptr->haveGPS = 0;
+			missionData_ptr->researchNav = 1;
+			missionData_ptr->researchGuidance = 1;
+		}
+	}
+	if(missionData_ptr->mode == 1){
+		missionData_ptr->haveGPS = 1;
+		missionData_ptr->researchNav = 0;
+		missionData_ptr->researchGuidance = 0;
 	}
 }
