@@ -51,6 +51,8 @@ struct  gps   gpsData;
 struct  nav   navData;
 struct  control controlData;
 struct  airdata adData;
+struct  mission missionData;
+struct  inceptor inceptorData;
 // sensor data 
 static struct sensordata sensorData;
 
@@ -97,7 +99,7 @@ static void mdlStart(SimStruct *S) {
     static int run_num=0;
     run_num++;
     reset_control(&controlData); // reset any internal states in the controller
-    controlData.run_num = run_num;
+    missionData.run_num = run_num;
 }
 
 /*========================================================================*
@@ -155,7 +157,7 @@ static void mdlOutputs(SimStruct *S, int_T tid) {
 
     #else
         // Compute guidance (reference) commands for the control law
-         get_guidance(TIME, &sensorData, &navData, &controlData);   
+         get_guidance(TIME, &sensorData, &navData, &controlData, &missionData);   
     #endif  
     //************************************************************************		
 
@@ -164,7 +166,7 @@ static void mdlOutputs(SimStruct *S, int_T tid) {
     //************************************************************************
 
     //**** CONTROL ***********************************************************
-    get_control(TIME, &sensorData, &navData, &controlData);
+    get_control(TIME, &sensorData, &navData, &controlData, &missionData);
     //************************************************************************
 
     //**** SYSTEM ID *********************************************************
