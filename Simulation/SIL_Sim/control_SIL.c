@@ -27,6 +27,7 @@
 // Include flightcode interfaces
 #include "globaldefs.h"
 #include "guidance/guidance_interface.h"
+#include "researchGuidance/researchguidance_interface.h"
 #include "control/control_interface.h"
 #include "system_id/systemid_interface.h"
 #include "faults/fault_interface.h"
@@ -51,6 +52,7 @@ struct  imu   imuData;
 struct  gps   gpsData;
 struct  nav   navData;
 struct  control controlData;
+struct  researchControl     researchControlData;
 struct  airdata adData;
 struct  mission missionData;
 struct  inceptor inceptorData;
@@ -180,7 +182,10 @@ static void mdlOutputs(SimStruct *S, int_T tid) {
 
     #else
         // Compute guidance (reference) commands for the control law
-         get_guidance(TIME, &sensorData, &navData, &controlData, &missionData);   
+         memcpy(&researchControlData,&controlData,sizeof(controlData)); // copy control data into researchControlData struct
+         get_researchGuidance(TIME, &sensorData, &navData, &researchControlData, &missionData);
+         memcpy(&controlData,&researchControlData,sizeof(researchControlData));      // copy researchControlData into control data
+  
     #endif  
     //************************************************************************		
 

@@ -52,7 +52,7 @@ student_control_var = Simulink.Variant('controller_mode == 8');
 % 7 = Student controller (C implementation) 
 % 8 = Student controller (Simulink)    
 % 9 = Waypoint tracker (C implementation)
-controller_mode = 2;
+controller_mode = 1;
 
 % Load controller parameters or compile flight code
 switch controller_mode
@@ -110,11 +110,11 @@ end
 % Set the path to the .c code in the following variables.
 %
 %%%%% GUIDANCE LAW %%%%%
+% AEM-5333: note, only researchGuidance c-code will be called.  
 % Point to the desired guidance code here. Use '-DSIMULINK_GUIDANCE' to
 % input the reference commands from the simulink diagram.
-% GUIDANCE = '../../FlightCode/guidance/straight_level.c';
-% GUIDANCE = '../../FlightCode/guidance/doublet_phi_theta.c';
- GUIDANCE = '-DSIMULINK_GUIDANCE';
+% GUIDANCE = '-DSIMULINK_GUIDANCE';
+GUIDANCE = '../../FlightCode/researchGuidance/empty_guidance.c';
 
 %%%%%% SYSTEM ID SELECTION %%%%%
 % Point to the desired system ID code here
@@ -133,7 +133,7 @@ end
  SENSOR_FAULT = '../../FlightCode/faults/sensfault_none.c';
 
 % Compile control software
-BASE_HZ = num2str(round(1/SampleTime))
+BASE_HZ = num2str(round(1/SampleTime));
 if exist('control_code_path','var')
     eval(['mex -I../../FlightCode/ control_SIL.c  ' control_code_path...
                        ' ' GUIDANCE ' ' SYSTEM_ID ' ' SURFACE_FAULT ' ' SENSOR_FAULT ...
