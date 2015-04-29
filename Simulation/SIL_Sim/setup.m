@@ -133,12 +133,13 @@ end
  SENSOR_FAULT = '../../FlightCode/faults/sensfault_none.c';
 
 % Compile control software
+BASE_HZ = num2str(round(1/SampleTime))
 if exist('control_code_path','var')
     eval(['mex -I../../FlightCode/ control_SIL.c  ' control_code_path...
                        ' ' GUIDANCE ' ' SYSTEM_ID ' ' SURFACE_FAULT ' ' SENSOR_FAULT ...
                        ' ../../FlightCode/faults/fault_functions.c ' ...
                        ' ../../FlightCode/system_id/systemid_functions.c ' ...
-                       '-DSIL_SIM ']);
+                       '-DSIL_SIM -DBASE_HZ=' BASE_HZ]);
 end
 
 
