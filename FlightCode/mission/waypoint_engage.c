@@ -20,7 +20,7 @@ extern void run_mission(struct sensordata *sensorData_ptr, struct nav *navData_p
 	
 	d = pow(pow(x-xt,2)+pow(y-yt,2)+pow(z-zt,2),0.5);
 	if(missionData_ptr->mode == 2){
-		if(d<10){
+		if(d<20){
 			missionData_ptr->haveGPS = 0;
 			missionData_ptr->researchNav = 1;
 			missionData_ptr->researchGuidance = 1;

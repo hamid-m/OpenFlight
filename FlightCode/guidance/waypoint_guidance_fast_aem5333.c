@@ -67,7 +67,7 @@ static double integrator[1] = {0};
 
 //////////////////////////////////////////////////////////////
 // Waypoint definition
-#define numofwaypoints 3
+#define numofwaypoints 10
 static short nextwaypoint=0;
 
 // order: NO, EA, IAS, alt
@@ -76,7 +76,14 @@ static short nextwaypoint=0;
 
 static double waypoints[numofwaypoints][4] =    {{0.0, 0.0, 20.0, 60.0},
 { 0.0, -50, 20.0, 60.0 },
-{ 0.0, -125, 20.0, 60.0 },
+{ 0.0, -100, 20.0, 60.0 },
+{ 0.0, -150, 20.0, 60.0 },
+{ 0.0, -200, 20.0, 60.0 },
+{ 0.0, -250, 20.0, 60.0 },
+{ 0.0, -300, 20.0, 60.0 },
+{ 0.0, -350, 20.0, 60.0 },
+{ 0.0, -400, 20.0, 60.0 },
+{ 0.0, -450, 20.0, 60.0 },
 };
 
 
@@ -91,7 +98,7 @@ static MATRIX pos_lla, pos_ecef, pos_ecef0, T_ecef2ned, v_ned, tmp31, pos_ned, W
 
 static short guide_init=0, guide_start=0;   // init for initialization of matrices, start for start of waypoint guidance                                                      
 static short pinit=0, lc=10;    // pinit for initialization of tracking, lc is the mode flag 
-static double d2WP, xA, yA, xT, yT, xC, yC, psiT, cpsi, dpsi, psi, Rt, R2, psiC;
+static double d2WP, xA, yA, xT, yT, xC, yC, psiT, cpsi, dpsi, psi, Rt, R2;
 
 
 extern void get_guidance(double time, struct sensordata *sensorData_ptr, struct nav *navData_ptr, struct control *controlData_ptr, struct mission *missionData_ptr){       
