@@ -67,7 +67,7 @@ static double integrator[1] = {0};
 
 //////////////////////////////////////////////////////////////
 // Waypoint definition
-#define numofwaypoints 10
+#define numofwaypoints 3
 static short nextwaypoint=0;
 
 // order: NO, EA, IAS, alt
@@ -76,14 +76,7 @@ static short nextwaypoint=0;
 
 static double waypoints[numofwaypoints][4] =    {{0.0, 0.0, 20.0, 60.0},
 { 0.0, -50, 20.0, 60.0 },
-{ 0.0, -100, 20.0, 60.0 },
-{ 0.0, -150, 20.0, 60.0 },
-{ 0.0, -200, 20.0, 60.0 },
-{ 0.0, -250, 20.0, 60.0 },
-{ 0.0, -300, 20.0, 60.0 },
-{ 0.0, -350, 20.0, 60.0 },
-{ 0.0, -400, 20.0, 60.0 },
-{ 0.0, -450, 20.0, 60.0 },
+{ 0.0, -101, 20.0, 60.0 },
 };
 
 
