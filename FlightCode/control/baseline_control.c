@@ -88,6 +88,7 @@ static double dr; // Delta rudder
 #ifdef HIL_SIM
 	static double roll_gain[3]  = {-0.64,-0.20,-0.07};  // PI gains for roll tracker and roll damper
 	static double pitch_gain[3] = {-0.90,-0.30,-0.08};  // PI gains for theta tracker and pitch damper
+  static double v_gain[2]   = {0.15, 0.040};    // PI gains for speed tracker
 #endif
 static double da; // Delta aileron
 static double de; // Delta elevator

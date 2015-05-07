@@ -23,10 +23,12 @@
 
 
 //////////////////////////////////////////////////////////////
-//#include "../utils/matrix.c" //Required for SIL sim only. Also must comment out #include <unistd.h> and #include <termios.h> inside matrix.c
-
-//#include "../aircraft/thor_config.h"  // for SIL sim only, use "thor" or "faser"
-#include AIRCRAFT_UP1DIR
+#ifdef SIL_SIM
+    #include "../utils/matrix.c" //Required for SIL sim only. Also must comment out #include <unistd.h> and #include <termios.h> inside matrix.c
+    #include "../aircraft/thor_config.h"  // for SIL sim only, use "thor" or "faser"
+#else
+    #include AIRCRAFT_UP1DIR
+#endif
 //////////////////////////////////////////////////////////////
 
 
@@ -59,7 +61,10 @@ static double altitude_control(double alt_ref, double altitude);
 	static double alt_gain[2] 	= {0.021,0.0017};
 	static double head_gain 	= 1.2;
 #endif
-
+#ifdef HIL_SIM
+    static double alt_gain[2]   = {0.023,0.0010};       // PI gains for altitude tracker
+    static double head_gain     = 1.5;                  // P gain for heading tracker
+#endif
 
 static double e[2] = {0,0};
 static double integrator[1] = {0};

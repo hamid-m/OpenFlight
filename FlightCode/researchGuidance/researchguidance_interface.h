@@ -27,4 +27,6 @@ extern void get_researchGuidance(double time, 			///< [sec], time since in autop
 		struct mission *missionData_ptr		///< pointer to missionData structure
 		);
 
+void close_researchGuidance(void);
+
 #endif /* RESEARCHGUIDANCE_INTERFACE_H_ */

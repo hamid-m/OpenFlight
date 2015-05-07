@@ -23,3 +23,7 @@ extern void get_researchGuidance(double time, struct sensordata *sensorData_ptr,
 		researchControlData_ptr->theta_cmd = 0;
 	}
 
+void close_researchGuidance(void){
+  //free memory space.  For example, use `mat_free`, 
+  // reset any initialization flags or integrators.
+}
