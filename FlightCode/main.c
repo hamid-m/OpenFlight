@@ -31,6 +31,7 @@
 #include "actuators/actuator_interface.h"
 #include "navigation/nav_interface.h"
 #include "researchNavigation/researchnav_interface.h"
+#include "mission/mission_interface.h"
 #include "guidance/guidance_interface.h"
 #include "researchGuidance/researchguidance_interface.h"
 #include "control/control_interface.h"
@@ -173,13 +174,12 @@ int main(int argc, char **argv) {
 			pthread_cond_wait (&trigger_daq, &mutex); // WAIT FOR DAQ ALARMS
 			tic = get_Time();			
 			get_daq(&sensorData, &navData, &controlData, &missionData);		
-			etime_daq = get_Time() - tic - DAQ_OFFSET; // compute execution time
 			//************************************************************************
 
 			//**** NAVIGATION ********************************************************
 			if(navData.err_type == got_invalid){ // check if NAV filter has been initialized
 
-					//if(gpsData.navValid == 0) // check if GPS is locked, comment out if using micronav_ahrs
+					if(gpsData.navValid == 0) // check if GPS is locked, comment out if using micronav_ahrs
 
 					init_nav(&sensorData, &navData, &controlData);// Initialize NAV filter
 			}
@@ -189,21 +189,23 @@ int main(int argc, char **argv) {
 			//**** RESEARCH NAVIGATION ***********************************************
 			if(researchNavData.err_type == got_invalid){ // check if research NAV filter has been initialized
 
-					//if(gpsData.navValid == 0) // check if GPS is locked, comment out if using micronav_ahrs
+					if(gpsData.navValid == 0) // check if GPS is locked, comment out if using micronav_ahrs
 
 					init_researchNav(&sensorData, &missionData, &navData, &researchNavData);// Initialize research NAV filter
 			}
 			else
 				get_researchNav(&sensorData, &missionData, &navData, &researchNavData);// Call research NAV filter
-
-			etime_nav = get_Time() - tic - etime_daq; // compute execution time			
 			//************************************************************************
 
-			if(missionData.researchNav == 1){	// use research nav filter for feedback
-				memcpy(&tempNavData,&navData,sizeof(navData));					// copy nav data into temp struct
-				memcpy(&navData,&researchNavData,sizeof(researchNavData));		// copy research nav data into nav data
+			//**** MISSION MANAGER ***************************************************
+			run_mission(&sensorData, &navData, &missionData);
+			//************************************************************************	
+			
+			memcpy(&tempNavData,&navData,sizeof(navData));	// copy nav data into temp struct
+			if(missionData.researchNav == 1){	// use research nav filter for feedback	
+				memcpy(&navData,&researchNavData,sizeof(researchNavData));	// copy research nav data into nav data
 			}
-
+			
 			if (missionData.mode == 2) { // autopilot mode
 				if (t0_latched == FALSE) {
 					t0 = get_Time();
@@ -217,33 +219,27 @@ int main(int argc, char **argv) {
 				
 				//**** RESEARCH GUIDANCE *************************************************
 				get_researchGuidance(time, &sensorData, &navData, &researchControlData, &missionData);
-				
+				memcpy(&tempControlData,&controlData,sizeof(controlData));	// copy control data into temp struct
 				if(missionData.researchGuidance == 1){	// use research guidance filter for feedback
-					memcpy(&tempControlData,&controlData,sizeof(controlData));					// copy control data into temp struct
 					memcpy(&controlData,&researchControlData,sizeof(researchControlData));		// copy research control data into control data
 				}
 				
-				etime_guidance= get_Time() - tic - etime_nav - etime_daq; // compute execution time
 				//************************************************************************		
 
 				//**** SENSOR FAULT ******************************************************
 				get_sensor_fault(time, &sensorData, &navData, &controlData);
-				etime_sensfault = get_Time() - tic - etime_guidance - etime_nav - etime_daq; // compute execution time
 				//************************************************************************
 
 				//**** CONTROL ***********************************************************
 				get_control(time, &sensorData, &navData, &controlData, &missionData);
-				etime_control = get_Time() - tic - etime_sensfault - etime_guidance - etime_nav - etime_daq; // compute execution time
 				//************************************************************************		
 
 				//**** SYSTEM ID *********************************************************
 				get_system_id(time, &sensorData, &navData, &controlData);
-				etime_sysid = get_Time() - tic - etime_control - etime_sensfault - etime_guidance - etime_nav - etime_daq; // compute execution time
 				//************************************************************************
 
 				//**** SURACE FAULT ******************************************************
 				get_surface_fault(time, &sensorData, &navData, &controlData);
-				etime_surffault = get_Time() - tic - etime_sysid - etime_control - etime_sensfault - etime_guidance - etime_nav - etime_daq; // compute execution time
 				//************************************************************************
 
 			}
@@ -252,6 +248,7 @@ int main(int argc, char **argv) {
 					t0_latched = FALSE;
 				}
 				reset_control(&controlData); // reset controller states and set get_control surfaces to zero
+				//close_guidance();
 			} // end if (controlData.mode == 2) 
 
 			// Add trim biases to get_control surface commands
@@ -260,16 +257,17 @@ int main(int argc, char **argv) {
 			//**** ACTUATORS *********************************************************
 			pthread_cond_wait (&trigger_actuators, &mutex);		   // WAIT FOR ACTUATOR ALARMS
 			set_actuators(&controlData);
-			etime_actuators = get_Time() - tic - ACTUATORS_OFFSET; // compute execution time
 			//************************************************************************
 
 			if(missionData.researchNav == 1){	// use research nav filter for feedback
 				memcpy(&navData,&tempNavData,sizeof(tempNavData));					// copy nav data back for data logging
 			}
+			if(missionData.researchGuidance == 1){	// use research guidance for feedback
+				memcpy(&controlData,&tempControlData,sizeof(tempControlData));		// copy control data back for data logging
+			}
 			
 			//**** DATA LOGGING ******************************************************
 			datalogger();
-			etime_datalog = get_Time() - tic - etime_actuators - ACTUATORS_OFFSET; // compute execution time
 			//************************************************************************
 
 			//**** TELEMETRY *********************************************************
@@ -281,8 +279,6 @@ int main(int argc, char **argv) {
 				cpuLoad = (uint16_t)last100ms;
 
 				send_telemetry(&sensorData, &navData, &controlData, &missionData, cpuLoad);
-				
-				etime_telemetry = get_Time() - tic - etime_datalog - etime_actuators - ACTUATORS_OFFSET; // compute execution time
 			}
 			//************************************************************************	
 

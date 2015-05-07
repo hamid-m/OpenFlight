@@ -36,12 +36,13 @@
 static double yaw_damper (double yawrate);
 static double roll_control (double phi_ref, double roll_angle, double rollrate, double delta_t);
 static double pitch_control(double the_ref, double pitch, double pitchrate, double delta_t);
+static double speed_control(double speed_ref, double airspeed, double delta_t);
 
 // initialize pitch and roll angle tracking errors, integrators, and anti wind-up operators
 // 0 values correspond to the roll tracker, 1 values correspond to the theta tracker
-static double e[2] = {0,0};
-static double integrator[2] = {0,0};
-static short anti_windup[2]={1,1};   // integrates when anti_windup is 1
+static double e[3] = {0,0,0};
+static double integrator[3] = {0,0,0};
+static short anti_windup[3]={1,1,1};   // integrates when anti_windup is 1
 
 /// ****************************************************************************************
 /// Yaw rate digital controller - parameters and variables
@@ -62,22 +63,27 @@ static double dr; // Delta rudder
 #ifdef AIRCRAFT_THOR
 	static double roll_gain[3]  = {-0.64,-0.20,-0.07};  // PI gains for roll tracker and roll damper
 	static double pitch_gain[3] = {-0.90,-0.30,-0.08};  // PI gains for theta tracker and pitch damper
+	static double v_gain[2] 	= {0.15, 0.040};		// PI gains for speed tracker
 #endif
 #ifdef AIRCRAFT_TYR
 	static double roll_gain[3]  = {-0.64,-0.20,-0.07};  // PI gains for roll tracker and roll damper
 	static double pitch_gain[3] = {-0.90,-0.30,-0.08};  // PI gains for theta tracker and pitch damper
+	static double v_gain[2] 	= {0.15, 0.040};		// PI gains for speed tracker
 #endif
 #ifdef AIRCRAFT_FASER
 	static double roll_gain[3]  = {-0.52,-0.20,-0.07};  // PI gains for roll tracker and roll damper
 	static double pitch_gain[3] = {-0.84,-0.23,-0.08};  // PI gains for theta tracker and pitch damper
+	static double v_gain[2] 	= {0.091, 0.020};
 #endif
 #ifdef AIRCRAFT_IBIS
 	static double roll_gain[3]  = {-0.52,-0.20,-0.07};  // PI gains for roll tracker and roll damper
 	static double pitch_gain[3] = {-0.84,-0.23,-0.08};  // PI gains for theta tracker and pitch damper
+	static double v_gain[2] 	= {0.091, 0.020};
 #endif
 #ifdef AIRCRAFT_BALDR
 	static double roll_gain[3]  = {-0.52,-0.20,-0.07};  // PI gains for roll tracker and roll damper
 	static double pitch_gain[3] = {-0.84,-0.23,-0.08};  // PI gains for theta tracker and pitch damper
+	static double v_gain[2] 	= {0.091, 0.020};
 #endif
 #ifdef HIL_SIM
 	static double roll_gain[3]  = {-0.64,-0.20,-0.07};  // PI gains for roll tracker and roll damper
@@ -85,6 +91,7 @@ static double dr; // Delta rudder
 #endif
 static double da; // Delta aileron
 static double de; // Delta elevator
+static double dthr;
 /// *****************************************************************************************
 
 
@@ -124,26 +131,20 @@ extern void get_control(double time, struct sensordata *sensorData_ptr, struct n
 	double p     = sensorData_ptr->imuData_ptr->p; // Roll rate
 	double q     = sensorData_ptr->imuData_ptr->q; // Pitch rate
 	double r     = sensorData_ptr->imuData_ptr->r; // Yaw rate
+	double ias   = sensorData_ptr->adData_ptr->ias_filt;
 
     double phi_cmd = controlData_ptr->phi_cmd;
     double theta_cmd = controlData_ptr->theta_cmd;
+	double ias_cmd = controlData_ptr->ias_cmd;
 
     controlData_ptr->de = pitch_control(theta_cmd, theta, q, TIMESTEP); // Elevator deflection [rad]
     controlData_ptr->dr = yaw_damper(r); 								// Rudder deflection [rad]
     controlData_ptr->da_r = roll_control(phi_cmd, phi, p, TIMESTEP); 		// Right Aileron deflection [rad]
 	controlData_ptr->da_l = -controlData_ptr->da_r; 					// Left aileron deflection [rad]
-	controlData_ptr->dthr = 0; // throttle
+	controlData_ptr->dthr = speed_control(ias_cmd, ias, TIMESTEP); // throttle
 	controlData_ptr->df_l = 0; // left flap
 	controlData_ptr->df_r = 0; // right flap
 }
-
-
-
-
-
-
-
-
 
 // Roll get_control law: angles in radians. Rates in rad/s. Time in seconds
 /*                _______________                __________
@@ -191,8 +192,6 @@ double yaw_damper (double yawrate)
 	return dr;
 }
 
-
-
 static double roll_control (double phi_ref, double roll_angle, double rollrate, double delta_t)
 {
 	// ROLL tracking controller implemented here
@@ -214,15 +213,6 @@ static double roll_control (double phi_ref, double roll_angle, double rollrate, 
 
     return da;
 }
-
-
-
-
-
-
-
-
-
 
 // Pitch get_control law: angles in radians. Rates in rad/s. Time in seconds
 /*                                                  __________
@@ -255,10 +245,24 @@ static double pitch_control(double the_ref, double pitch, double pitchrate, doub
 	return de;  //rad
 }
 
+static double speed_control(double speed_ref, double airspeed, double delta_t)
+{
+	// Speed tracker
+	e[2] = speed_ref - airspeed;
+	integrator[2] += e[2]*delta_t*anti_windup[2]; // altitude error integral
 
+		// proportional term  + integral term
+	dthr = v_gain[0]*e[2] + v_gain[1]*integrator[2];    // Throttle output
 
+	//eliminate wind-up on airspeed integral
+	if      (dthr >= THROTTLE_AUTH_MAX-THROTTLE_TRIM && e[2] < 0) {anti_windup[2] = 1; dthr = THROTTLE_AUTH_MAX-THROTTLE_TRIM;}
+	else if (dthr >= THROTTLE_AUTH_MAX-THROTTLE_TRIM && e[2] > 0) {anti_windup[2] = 0; dthr = THROTTLE_AUTH_MAX-THROTTLE_TRIM;}  //stop integrating
+	else if (dthr <= THROTTLE_AUTH_MIN-THROTTLE_TRIM && e[2] < 0) {anti_windup[2] = 0; dthr = THROTTLE_AUTH_MIN-THROTTLE_TRIM;}  //stop integrating
+	else if (dthr <= THROTTLE_AUTH_MIN-THROTTLE_TRIM && e[2] > 0) {anti_windup[2] = 1; dthr = THROTTLE_AUTH_MIN-THROTTLE_TRIM;}
+	else {anti_windup[2] = 1;}
 
-
+	return dthr; // non dimensional
+}
 
 // Reset parameters to initial values
 extern void reset_control(struct control *controlData_ptr){
@@ -275,6 +279,4 @@ extern void reset_control(struct control *controlData_ptr){
 	controlData_ptr->da_r = 0; // right aileron
 	controlData_ptr->df_l = 0; // left flap
 	controlData_ptr->df_r = 0; // right flap
-
 }
-
